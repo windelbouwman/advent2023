@@ -3,6 +3,7 @@ from std import print, read_file, str_len, str_get, str_slice, str_to_int
 from strlib import split_lines, is_digit
 from datatypes import List
 from utils import panic
+from aoclib import Range, ranges_overlap
 
 
 fn main():
@@ -20,8 +21,8 @@ fn part1(schematic: Schematic):
             let row_range2 = Range(begin: label.row, end: label.row)
             let column_range2 = Range(begin: label.column, end: label.column + str_len("{label.number}") - 1)
             
-            if ranges_overlap(row_range1, row_range2):
-                if ranges_overlap(column_range1, column_range2):
+            if ranges_overlap(self: row_range1, other: row_range2):
+                if ranges_overlap(self: column_range1, other: column_range2):
                     print("touch: {symbol.symbol}: {label.number}")
                     symbol.labels.append(label.number)
     
@@ -41,21 +42,11 @@ fn part2(schematic: Schematic):
             sum += ratio
     print("Part 2: {sum}")
 
-struct Range:
-    begin: int
-    end: int
-
-fn overlap(s1: int, end1: int) -> bool:
-    pass
-
-fn ranges_overlap(self: Range, other: Range) -> bool:
-    return (self.begin <= other.end) and (other.begin <= self.end)
-
 fn load_data(filename: str) -> Schematic:
     let labels: List[Label] = List()
     let symbols: List[Symbol] = List()
     let row = 0
-    for line in split_lines(read_file(filename)):
+    for line in split_lines(text: read_file(filename)):
         let n = str_len(line)
         let i = 0
         while i < n:

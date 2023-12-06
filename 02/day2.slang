@@ -48,24 +48,24 @@ fn part2(games: List[Game]):
 fn load_games() -> List[Game]:
     let games: List[Game] = List()
 
-    for line in split_lines(read_file("input.txt")):
+    for line in split_lines(text: read_file("input.txt")):
         # print(line)
         # Example line:
         # Game 4: 9 red, 3 green; 3 green, 8 red, 6 blue; 12 blue, 4 green, 6 red; 4 green, 18 blue, 11 red; 9 blue, 2 green, 3 red; 14 blue, 7 red
 
-        let parts = split_string(line, sep: ':')
+        let parts = split_string(text: line, sep: ':')
         let header: str = parts.first()
         let tail: str = parts.last()
 
-        let game_id = str_to_int(split_string(header, sep: ' ').last())
+        let game_id = str_to_int(split_string(text: header, sep: ' ').last())
         let draws: List[Draw] = List()
         # print("Game id: {game_id}")
-        for draw_text in split_string(tail, sep: ';'):
+        for draw_text in split_string(text: tail, sep: ';'):
             # print("Draw: {draw_text}")
             let draw = new_draw()
-            for group_text in split_string(draw_text, sep: ','):
+            for group_text in split_string(text: draw_text, sep: ','):
                 # print(group_text)
-                let parts3 = split_string(trim(group_text), sep: ' ')
+                let parts3 = split_string(text: trim(group_text), sep: ' ')
                 let count = str_to_int(parts3.first())
                 let color = parts3.last()
                 if color == "red":
