@@ -16,13 +16,9 @@ fn get_numbers(text: str) -> List[int]:
 fn is_empty(text?: str) -> bool:
     return str_len(text) == 0
 
-
 struct Range:
     begin: int
     end: int
-
-# fn overlap(s1: int, end1: int) -> bool:
-#     return "blas"
 
 fn ranges_overlap(self: Range, other: Range) -> bool:
     return (self.begin <= other.end) and (other.begin <= self.end)
