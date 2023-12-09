@@ -1,5 +1,5 @@
 
-from std import str_to_int, str_len
+from std import str_to_int, str_len, str_slice
 from strlib import split_string, trim
 from utils import assert
 from datatypes import List, option_unwrap
@@ -61,6 +61,38 @@ fn filter[T](values: List[T], criterium: fn(T) -> bool) -> List[T]:
         if criterium(value):
             allowed.append(value)
     return allowed
+
+fn all[T](values: List[T], check: fn(T) -> bool) -> bool:
+    for value in values:
+        if not check(value):
+            return false
+    return true
+
+fn find_string(text: str, pattern: str) -> int:
+    # Find a pattern in a text
+    let n2 = str_len(pattern)
+    let n = str_len(text) - n2 + 1
+    let index = 0
+    while index < n:
+        let candidate = str_slice(text, index, index + n2)
+        if candidate == pattern:
+            return index
+        else:
+            index += 1
+    return -1
+
+fn rfind_string(text: str, pattern: str) -> int:
+    # Find a pattern in a text (from end of text)
+    let n = str_len(text)
+    let n2 = str_len(pattern)
+    let index = n - n2
+    while index >= 0:
+        let candidate = str_slice(text, index, index + n2)
+        if candidate == pattern:
+            return index
+        else:
+            index -= 1
+    return -1
 
 extern fn sqrt(value: float) -> float
 extern fn round_up(value: float) -> int
