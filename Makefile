@@ -4,7 +4,7 @@
 SLANG_FOLDER=./sauce-os
 SLANG_LIBS=${SLANG_FOLDER}/compiler/utils/utils.slang ${SLANG_FOLDER}/compiler/utils/strlib.slang ${SLANG_FOLDER}/compiler/utils/datatypes.slang ${SLANG_FOLDER}/compiler/utils/sorting.slang ${SLANG_FOLDER}/runtime/std.slang aoclib.slang
 
-all: 01/day1.exe 02/day2.exe 03/day3.exe 04/day4.exe 05/day5.exe 06/day6.exe 07/day7.exe 08/day8.exe 09/day9.exe
+all: 01/day1.exe 02/day2.exe 03/day3.exe 04/day4.exe 05/day5.exe 06/day6.exe 07/day7.exe 08/day8.exe 09/day9.exe 10/day10.exe
 
 %.exe: %.o runtime.o aoclib-c.o
 	gcc -o $@ $< runtime.o aoclib-c.o -lm
