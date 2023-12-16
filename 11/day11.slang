@@ -39,10 +39,6 @@ struct Puzzle:
     x_max: int
     y_max: int
 
-struct Pair:
-    first: Point
-    second: Point
-
 fn part1(puzzle: Puzzle):
     # step 1: Find empty rows and columns
     let x_distances: List[int] = List()
@@ -81,29 +77,22 @@ fn part1(puzzle: Puzzle):
             let galaxy2 = puzzle.galaxies.get(index: index2)
 
             # Determine distance:
-            
-            let x1 = galaxy1.x
-            let x2 = galaxy2.x
-            if x1 > x2:
-                x1 = galaxy2.x
-                x2 = galaxy1.x
-            let dx = 0
-            while x1 < x2:
-                dx += x_distances.get(index: x1)
-                x1 += 1
-
-            let y1 = galaxy1.y
-            let y2 = galaxy2.y
-            if y1 > y2:
-                y1 = galaxy2.y
-                y2 = galaxy1.y
-            let dy = 0
-            while y1 < y2:
-                dy += y_distances.get(index: y1)
-                y1 += 1
-            
+            let dx = distance(a: galaxy1.x, b: galaxy2.x, distances: x_distances)
+            let dy = distance(a: galaxy1.y, b: galaxy2.y, distances: y_distances)
             s += dy + dx
 
             index2 += 1
         index1 += 1
     print("Sum = {s}")
+
+fn distance(a: int, b: int, distances: List[int]) -> int:
+    let x1 = a
+    let x2 = b
+    if x1 > x2:
+        x1 = b
+        x2 = a
+    let dx = 0
+    while x1 < x2:
+        dx += distances.get(index: x1)
+        x1 += 1
+    return dx
