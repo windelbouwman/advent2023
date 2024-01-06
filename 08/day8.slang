@@ -2,14 +2,17 @@
 from std import read_file, print, str_len, str_slice, str_get
 from strlib import split_lines, split_string, trim
 from utils import panic
-from datatypes import Dictionary, option_unwrap
+from datatypes import List
+from dicttype import Dictionary
 
 
 fn main():
     # let puzzle = load_data(filename: "example.txt")
-    # let puzzle = load_data(filename: "example2.txt")
+    # let puzzle = load_data(filename: "example3.txt")
     let puzzle = load_data(filename: "input.txt")
     part1(puzzle)
+    # Part 2 takes too much memory .....
+    # part2(puzzle)
 
 fn part1(puzzle: Puzzle):
     print("Part 1")
@@ -27,12 +30,57 @@ fn part1(puzzle: Puzzle):
         
         steps += 1
         if cmd == 'L':
-            node = option_unwrap(puzzle.left.get(key: node))
+            node = puzzle.left.get(key: node)
         elif cmd == 'R':
-            node = option_unwrap(puzzle.right.get(key: node))
+            node = puzzle.right.get(key: node)
         else:
             panic("Invalid cmd: {cmd}")
     print("Steps: {steps}")
+
+fn part2(puzzle: Puzzle):
+    # start at all nodes ending with A
+
+    # List of simultanious nodes:
+    let nodes: List[str] = List()
+    for key in puzzle.left:
+        if str_get(key, 2) == 'A':
+            print("Key: {key}")
+            nodes.append(key)
+    
+    let index = 0
+    let n = str_len(puzzle.sequence)
+    let steps = 0
+    loop:
+
+        let cmd = str_get(text: puzzle.sequence, index)
+        index += 1
+        if index >= n:
+            index = 0
+
+        let new_nodes: List[str] = List()
+        let non_z = false
+        for node in nodes:
+            # print("> {node}")
+            let new_node = ""
+            if cmd == 'L':
+                new_node = puzzle.left.get(key: node)
+            elif cmd == 'R':
+                new_node = puzzle.right.get(key: node)
+            else:
+                panic("Invalid cmd: {cmd}")
+            if str_get(new_node, 2) == 'Z':
+                print(new_node)
+            else:
+                non_z = true
+
+            new_nodes.append(new_node)
+        nodes = new_nodes
+        steps += 1
+        
+        if not non_z:
+            break
+    
+    print("Part 2 steps: {steps}")
 
 fn load_data(filename: str) -> Puzzle:
     let section = 0

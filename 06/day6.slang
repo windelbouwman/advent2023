@@ -3,7 +3,8 @@
 from std import read_file, print, str_len, float_to_str, str_to_int
 from strlib import split_lines, trim, split_string
 from datatypes import List
-from aoclib import get_numbers, find_min_value, zip, sqrt, round_down, round_up
+from aoclib import get_numbers, find_min_value, sqrt, round_down, round_up
+from functools import zip
 
 
 fn main():

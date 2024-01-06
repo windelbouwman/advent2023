@@ -2,14 +2,8 @@
 .SUFFIXES:
 
 SLANG_FOLDER=./sauce-os
-SLANG_LIBS := ${SLANG_FOLDER}/compiler/utils/utils.slang
-SLANG_LIBS += ${SLANG_FOLDER}/compiler/utils/strlib.slang
-SLANG_LIBS += ${SLANG_FOLDER}/compiler/utils/datatypes.slang
-SLANG_LIBS += ${SLANG_FOLDER}/compiler/utils/sorting.slang
+SLANG_LIBS := $(wildcard ${SLANG_FOLDER}/Libs/base/*.slang)
 SLANG_LIBS += ${SLANG_FOLDER}/runtime/std.slang
-SLANG_LIBS += ${SLANG_FOLDER}/Libs/base/hashmap.slang
-SLANG_LIBS += ${SLANG_FOLDER}/Libs/base/math.slang
-SLANG_LIBS += ${SLANG_FOLDER}/Libs/base/hashlib.slang
 SLANG_LIBS += aoclib.slang
 
 all: 01/day1.exe 02/day2.exe 03/day3.exe 04/day4.exe 05/day5.exe 06/day6.exe 07/day7.exe 08/day8.exe 09/day9.exe 10/day10.exe 11/day11.exe 15/day15.exe

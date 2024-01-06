@@ -1,7 +1,8 @@
 
 from std import read_file, print, str_len, str_to_int
 from strlib import split_lines, trim, split_string, str_get, string_compare
-from datatypes import List, Dictionary, option_unwrap
+from datatypes import List
+from dicttype import Dictionary
 from sorting import sort_list
 from utils import panic, assert
 
@@ -91,13 +92,13 @@ fn count_same(values: List[int]) -> List[int]:
     for value in values:
         let key = "{value}"
         if d.contains(key):
-            d.insert(key, value: option_unwrap(d.get(key)) + 1)
+            d.insert(key, value: d.get(key) + 1)
         else:
             d.insert(key, value: 1)
     
     let counts: List[int] = List()
     for key in d:
-        counts.append(option_unwrap(d.get(key)))
+        counts.append(d.get(key))
     return sort_list(counts, cmp: compare_integers)
 
 fn compare_integers(a: int, b: int) -> bool:

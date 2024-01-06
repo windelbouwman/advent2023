@@ -36,37 +36,7 @@ fn find_min_value(values: List[int]) -> int:
             x = value
     return x
 
-fn zip[L,R,P](left: List[L], right: List[R], merger: fn(L, R) -> P) -> List[P]:
-    # Zip two lists into a merged list!
-    assert(condition: left.len() == right.len(), message: "Can only zip lists of equal length")
 
-    let pairs: List[P] = List()
-    let b_iter = right.iter()
-    for a in left:
-        let b = option_unwrap(b_iter.next())
-        let pair = merger(a, b)
-        pairs.append(pair)
-    
-    return pairs
-
-fn map[T,V](values: List[T], function: fn(T) -> V) -> List[V]:
-    let mapped: List[V] = List()
-    for value in values:
-        mapped.append(function(value))
-    return mapped
-
-fn filter[T](values: List[T], criterium: fn(T) -> bool) -> List[T]:
-    let allowed: List[T] = List()
-    for value in values:
-        if criterium(value):
-            allowed.append(value)
-    return allowed
-
-fn all[T](values: List[T], check: fn(T) -> bool) -> bool:
-    for value in values:
-        if not check(value):
-            return false
-    return true
 
 fn find_string(text: str, pattern: str) -> int:
     # Find a pattern in a text

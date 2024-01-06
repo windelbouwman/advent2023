@@ -1,7 +1,8 @@
 
 from std import print, read_file, str_get, str_len, str_to_int
 from strlib import split_lines, is_digit, find_char, reverse_find_char
-from datatypes import Option, option_unwrap, Dictionary
+from datatypes import Option, option_unwrap
+from dicttype import Dictionary
 from aoclib import find_string, rfind_string
 
 fn main():
@@ -60,11 +61,11 @@ fn part2():
             let index = find_string(text: line, pattern: key)
             if index >= 0 and index < index1:
                 index1 = index
-                c1 = option_unwrap(patterns.get(key))
+                c1 = patterns.get(key)
             index = rfind_string(text: line, pattern: key)
             if index >= 0 and index > index2:
                 index2 = index
-                c2 = option_unwrap(patterns.get(key))
+                c2 = patterns.get(key)
         let num = c1 * 10 + c2
         sum += num
     print("Sum: {sum}")

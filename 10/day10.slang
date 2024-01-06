@@ -1,11 +1,14 @@
 
-from std import read_file, str_get, print, str_len
+from std import read_file, str_get, print, str_len, float_to_str
 from strlib import split_lines, find_char
 from datatypes import List, Option
 from hashmap import HashMap
+from shapelib import Point, str_point, Path, shoelace
 
 fn main():
     # let filename = "example.txt"
+    # let filename = "example3.txt"  # enclosed = 4
+    # let filename = "example4.txt"  # enclosed = 10
     let filename = "input.txt"
 
     let s_pos = Point(x: 0, y: 0)
@@ -29,11 +32,12 @@ fn part1(maze: Maze, s_pos: Point):
     # Part 1: 
     # Pipe shapes: '-' '|' 'F' 'L' 'J' '7'
     # Talk a walk around the maze, to determine its length
+    let points: List[Point] = List()
     let p1 = s_pos
-
     let counter = 0
     loop:
         maze.set_distance(p: p1, d: counter)
+        points.append(p1)
         case try_move(p: p1, maze):
             Some(p_next):
                 p1 = p_next
@@ -42,17 +46,14 @@ fn part1(maze: Maze, s_pos: Point):
         counter += 1
         # print("p1 = {str_point(p1)} {counter}")
     counter += 1 # Last step home
-    print("Part 1: {counter / 2}")
+    print("Part 1: {counter / 2}")  # 6613
+
+    # part 2: area enclosed by polygon:
+    let s = shoelace(points) - (counter / 2) + 1
+    print("Part 2: {float_to_str(s)}")
 
 fn is_S(c?: char) -> bool:
     return c == 'S'
-
-struct Point:
-    x: int
-    y: int
-
-fn str_point(p?: Point) -> str:
-    return "[{p.x},{p.y}]"
 
 fn copy(p?: Point) -> Point:
     return Point(x: p.x, y: p.y)

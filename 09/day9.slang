@@ -1,7 +1,8 @@
 
 from std import read_file, print
 from strlib import split_lines
-from aoclib import get_numbers, all
+from aoclib import get_numbers
+from functools import all
 from utils import assert
 from datatypes import List
 
