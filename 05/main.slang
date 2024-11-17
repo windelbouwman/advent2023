@@ -31,7 +31,7 @@ fn load_data(filename: str) -> Puzzle:
                 rangemaps = List()
                 state = 3
             3:
-                if str_len(line) == 0:
+                if str_len(text: line) == 0:
                     state = 2
                     mappings.append(new_mapping(name: mapname, rangemaps))
                 else:

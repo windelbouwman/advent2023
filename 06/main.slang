@@ -1,9 +1,10 @@
 
 
-from std import read_file, print, str_len, float_to_str, str_to_int
-from strlib import split_lines, trim, split_string
+from std import read_file, print, str_len, float_to_str
+from strlib import split_lines, trim, split_string, str_to_int
 from datatypes import List
-from aoclib import get_numbers, find_min_value, sqrt, round_down, round_up
+from aoclib import get_numbers, find_min_value, round_down, round_up
+from math import sqrt
 from functools import zip
 
 
@@ -71,8 +72,8 @@ fn analytical(race: Race):
     let r = sqrt(b*b - 4*a*c)
     let x1 = (-b + r) / (2*a)
     let x2 = (-b - r) / (2*a)
-    let x1i = round_up(x1)
-    let x2i = round_down(x2)
+    let x1i = round_up(value: x1)
+    let x2i = round_down(value: x2)
 
     x1i += 1
     while does_win(t_hold: x1i-1, race):

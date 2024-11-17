@@ -151,8 +151,8 @@ class Maze:
             return '.'
         else:
             let row = rows.get(index: p.y)
-            if p.x < str_len(row) and p.x >= 0:
-                return str_get(row, p.x)
+            if p.x < str_len(text: row) and p.x >= 0:
+                return str_get(text: row, index: p.x)
             else:
                 return '.'
     

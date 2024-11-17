@@ -1,6 +1,6 @@
 
-from std import read_file, print, str_len, str_to_int
-from strlib import split_lines, trim, split_string, str_get, string_compare
+from std import read_file, print, str_len
+from strlib import split_lines, trim, split_string, str_get, string_compare, str_to_int
 from datatypes import List
 from dicttype import Dictionary
 from sorting import sort_list
@@ -24,7 +24,7 @@ fn load_data(filename: str) -> Puzzle:
         let i = 0
         let n = str_len(text)
         while i < n:
-            let x = card_value(c: str_get(text, i))
+            let x = card_value(c: str_get(text, index: i))
             print("card value={x}")
             cards.append(x)
             i += 1

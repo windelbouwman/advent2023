@@ -1,6 +1,6 @@
 
-from std import print, read_file, str_to_int, str_len
-from strlib import split_lines, split_string, trim
+from std import print, read_file, str_len
+from strlib import split_lines, split_string, trim, str_to_int
 from datatypes import List
 from aoclib import get_numbers, contains
 

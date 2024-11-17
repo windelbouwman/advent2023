@@ -1,7 +1,7 @@
 
-from std import print, read_file, str_to_int
+from std import print, read_file
 from utils import panic
-from strlib import split_lines, split_string, trim
+from strlib import split_lines, split_string, trim, str_to_int
 from datatypes import List
 
 fn main():
@@ -48,7 +48,7 @@ fn part2(games: List[Game]):
 fn load_games() -> List[Game]:
     let games: List[Game] = List()
 
-    for line in split_lines(text: read_file("input.txt")):
+    for line in split_lines(text: read_file(filename: "input.txt")):
         # print(line)
         # Example line:
         # Game 4: 9 red, 3 green; 3 green, 8 red, 6 blue; 12 blue, 4 green, 6 red; 4 green, 18 blue, 11 red; 9 blue, 2 green, 3 red; 14 blue, 7 red

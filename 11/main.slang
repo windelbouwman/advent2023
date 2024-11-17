@@ -17,11 +17,11 @@ fn load_input(filename: str) -> Puzzle:
     
     for line in split_lines(text: read_file(filename)):
         let col = 0
-        let n = str_len(line)
+        let n = str_len(text: line)
         if n > x_max:
             x_max = n
         while col < n:
-            let c = str_get(line, col)
+            let c = str_get(text: line, index: col)
             if c == '#':
                 galaxies.append(Point(x: col, y: row))
             col += 1

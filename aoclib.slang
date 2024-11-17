@@ -1,6 +1,6 @@
 
-from std import str_to_int, str_len, str_slice
-from strlib import split_string, trim
+from std import str_len, str_slice
+from strlib import split_string, trim, str_to_int
 from utils import assert
 from datatypes import List, option_unwrap
 
@@ -40,11 +40,11 @@ fn find_min_value(values: List[int]) -> int:
 
 fn find_string(text: str, pattern: str) -> int:
     # Find a pattern in a text
-    let n2 = str_len(pattern)
+    let n2 = str_len(text: pattern)
     let n = str_len(text) - n2 + 1
     let index = 0
     while index < n:
-        let candidate = str_slice(text, index, index + n2)
+        let candidate = str_slice(text, begin: index, end: index + n2)
         if candidate == pattern:
             return index
         else:
@@ -54,17 +54,16 @@ fn find_string(text: str, pattern: str) -> int:
 fn rfind_string(text: str, pattern: str) -> int:
     # Find a pattern in a text (from end of text)
     let n = str_len(text)
-    let n2 = str_len(pattern)
+    let n2 = str_len(text: pattern)
     let index = n - n2
     while index >= 0:
-        let candidate = str_slice(text, index, index + n2)
+        let candidate = str_slice(text, begin: index, end: index + n2)
         if candidate == pattern:
             return index
         else:
             index -= 1
     return -1
 
-extern fn sqrt(value: float) -> float
-extern fn round_up(value: float) -> int
-extern fn round_down(value: float) -> int
+extern "foo" fn round_up(value: float) -> int
+extern "foo" fn round_down(value: float) -> int
 

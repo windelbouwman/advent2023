@@ -1,7 +1,7 @@
  
-from std import read_file, ord, str_get, str_len, print, str_slice, str_to_int
+from std import read_file, ord, str_get, str_len, print, str_slice
 from utils import assert
-from strlib import split_lines, split_string
+from strlib import split_lines, split_string, str_to_int
 from datatypes import List
 from math import modulo
 
@@ -37,7 +37,7 @@ fn part2(puzzle: Puzzle):
             hash_map.insert(label, strength)
         else:
             let n = str_len(text)
-            let label = str_slice(text, 0, n - 1)
+            let label = str_slice(text, begin: 0, end: n - 1)
             print("Remove {label}")
             hash_map.delete(label)
     

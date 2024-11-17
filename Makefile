@@ -1,27 +1,44 @@
 
 .SUFFIXES:
+.PRECIOUS: ${BUILDDIR}/%.c
 
+BUILDDIR=build
 SLANG_FOLDER=./sauce-os
-SLANG_LIBS := $(wildcard ${SLANG_FOLDER}/Libs/base/*.slang)
-SLANG_LIBS += ${SLANG_FOLDER}/runtime/std.slang
-SLANG_LIBS += aoclib.slang
+BASE_LIB_SRCS := $(wildcard ${SLANG_FOLDER}/Libs/base/*.slang)
+BASE_LIB_SRCS += ${SLANG_FOLDER}/runtime/std.slang
+AOC_LIB_SRCS=aoclib.slang
+CFLAGS=-I${SLANG_FOLDER}/runtime
 
-all: 01/day1.exe 02/day2.exe 03/day3.exe 04/day4.exe 05/day5.exe 06/day6.exe 07/day7.exe 08/day8.exe 09/day9.exe 10/day10.exe 11/day11.exe 15/day15.exe
-# 10/x.exe
+all: ${BUILDDIR}/day01.exe ${BUILDDIR}/day02.exe ${BUILDDIR}/day03.exe ${BUILDDIR}/day04.exe ${BUILDDIR}/day05.exe ${BUILDDIR}/day06.exe ${BUILDDIR}/day07.exe \
+  ${BUILDDIR}/day08.exe ${BUILDDIR}/day09.exe ${BUILDDIR}/day10.exe \
+  ${BUILDDIR}/day11.exe ${BUILDDIR}/day15.exe
 
-%.exe: %.o runtime.o aoclib-c.o
-	gcc -o $@ $< runtime.o aoclib-c.o -lm
+${BUILDDIR}/day%.exe: ${BUILDDIR}/day%.o ${BUILDDIR}/slangrt.o ${BUILDDIR}/aoclib-c.o ${BUILDDIR}/libbase.o ${BUILDDIR}/libaoc.o
+	gcc -o $@ $< ${BUILDDIR}/slangrt.o ${BUILDDIR}/aoclib-c.o ${BUILDDIR}/libbase.o ${BUILDDIR}/libaoc.o -lm
 
-%.o: %.c
+${BUILDDIR}/day%.o: ${BUILDDIR}/day%.c
 	gcc ${CFLAGS} -c -o $@ $<
 
-%.c: %.slang ${SLANG_LIBS}
-	slangc --backend-c -o $@ ${SLANG_LIBS} $<
-
-runtime.o: ${SLANG_FOLDER}/runtime/runtime.c
+${BUILDDIR}/lib%.o: ${BUILDDIR}/lib%.c
 	gcc ${CFLAGS} -c -o $@ $<
 
-aoclib-c.o: aoclib-c.c
+${BUILDDIR}/day%.c: ./%/main.slang ${BUILDDIR}/libbase.json ${BUILDDIR}/libaoc.json | ${BUILDDIR}
+	slangc --backend-c --add-import ${BUILDDIR}/libbase.json --add-import ${BUILDDIR}/libaoc.json -o $@ $<
+
+${BUILDDIR}/slangrt.o: ${SLANG_FOLDER}/runtime/slangrt.c | ${BUILDDIR}
 	gcc ${CFLAGS} -c -o $@ $<
 
-.PRECIOUS: %.c
+${BUILDDIR}/aoclib-c.o: aoclib-c.c | ${BUILDDIR}
+	gcc ${CFLAGS} -c -o $@ $<
+
+${BUILDDIR}/libaoc.c ${BUILDDIR}/libaoc.json: ${AOC_LIB_SRCS} ${BUILDDIR}/libbase.json | ${BUILDDIR}
+	slangc --backend-c --add-import ${BUILDDIR}/libbase.json --gen-export ${BUILDDIR}/libaoc.json -o ${BUILDDIR}/libaoc.c ${AOC_LIB_SRCS}
+
+${BUILDDIR}/libbase.c ${BUILDDIR}/libbase.json: ${BASE_LIB_SRCS} | ${BUILDDIR}
+	slangc --backend-c --gen-export ${BUILDDIR}/libbase.json -o ${BUILDDIR}/libbase.c ${BASE_LIB_SRCS}
+
+${BUILDDIR}:
+	mkdir -p ${BUILDDIR}
+
+clean:
+	rm -rf ${BUILDDIR}
