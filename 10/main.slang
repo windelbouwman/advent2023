@@ -1,5 +1,5 @@
 
-from std import read_file, str_get, print, str_len, float_to_str
+from std import read_file, print, str_len, float_to_str
 from strlib import split_lines, find_char
 from datatypes import List, Option
 from hashmap import HashMap
@@ -56,19 +56,19 @@ fn is_S(c?: char) -> bool:
     return c == 'S'
 
 fn copy(p?: Point) -> Point:
-    return Point(x: p.x, y: p.y)
+    Point(x: p.x, y: p.y)
 
 fn up(p?: Point) -> Point:
-    return Point(x: p.x, y: p.y - 1)
+    Point(x: p.x, y: p.y - 1)
 
 fn down(p?: Point) -> Point:
-    return Point(x: p.x, y: p.y + 1)
+    Point(x: p.x, y: p.y + 1)
 
 fn left(p?: Point) -> Point:
-    return Point(x: p.x - 1, y: p.y)
+    Point(x: p.x - 1, y: p.y)
 
 fn right(p?: Point) -> Point:
-    return Point(x: p.x + 1, y: p.y)
+    Point(x: p.x + 1, y: p.y)
 
 fn try_move(p: Point, maze: Maze) -> Option[Point]:
     case try_up(p, maze):
@@ -96,30 +96,30 @@ fn try_up(p: Point, maze: Maze) -> Option[Point]:
     let c1 = maze.get_char(p)
     let c2 = maze.get_char(p2)
     if is_up_open(c1) and is_down_open(c2) and not maze.has_score(p2):
-        return Option.Some(p2)
+        Option.Some(p2)
     else:
-        return Option.None()
+        Option.None()
 
 fn try_down(p: Point, maze: Maze) -> Option[Point]:
     let p2 = down(p)
     let c1 = maze.get_char(p)
     let c2 = maze.get_char(p2)
     if is_down_open(c1) and is_up_open(c2) and not maze.has_score(p2):
-        return Option.Some(p2)
+        Option.Some(p2)
     else:
-        return Option.None()
+        Option.None()
 
 fn is_left_open(c?: char) -> bool:
-    return c == '-' or c == '7' or c == 'J' or c == 'S'
+    c == '-' or c == '7' or c == 'J' or c == 'S'
 
 fn is_right_open(c?: char) -> bool:
-    return c == '-' or c == 'L' or c == 'F' or c == 'S'
+    c == '-' or c == 'L' or c == 'F' or c == 'S'
 
 fn is_down_open(c?: char) -> bool:
-    return c == '|' or c == '7' or c == 'F' or c == 'S'
+    c == '|' or c == '7' or c == 'F' or c == 'S'
 
 fn is_up_open(c?: char) -> bool:
-    return c == '|' or c == 'L' or c == 'J' or c == 'S'
+    c == '|' or c == 'L' or c == 'J' or c == 'S'
 
 fn try_left(p: Point, maze: Maze) -> Option[Point]:
     let p2 = left(p)
@@ -127,18 +127,18 @@ fn try_left(p: Point, maze: Maze) -> Option[Point]:
     let c2 = maze.get_char(p2)
 
     if is_left_open(c1) and is_right_open(c2) and not maze.has_score(p2):
-        return Option.Some(p2)
+        Option.Some(p2)
     else:
-        return Option.None()
+        Option.None()
 
 fn try_right(p: Point, maze: Maze) -> Option[Point]:
     let p2 = right(p)
     let c1 = maze.get_char(p)
     let c2 = maze.get_char(p2)
     if is_right_open(c1) and is_left_open(c2) and not maze.has_score(p2):
-        return Option.Some(p2)
+        Option.Some(p2)
     else:
-        return Option.None()
+        Option.None()
 
 class Maze:
     var rows: List[str]
@@ -146,19 +146,19 @@ class Maze:
 
     fn get_char(p?: Point) -> char:
         if p.y < 0:
-            return '.'
+            '.'
         elif p.y >= rows.len():
-            return '.'
+            '.'
         else:
             let row = rows.get(index: p.y)
             if p.x < str_len(text: row) and p.x >= 0:
-                return str_get(text: row, index: p.x)
+                row[p.x]
             else:
-                return '.'
+                '.'
     
     fn has_score(p?: Point) -> bool:
         let key = str_point(p)
-        return scores.contains(key)
+        scores.contains(key)
 
     fn set_distance(p: Point, d: int):
         let key = str_point(p)

@@ -1,5 +1,5 @@
 
-from std import print, read_file, str_len, str_get
+from std import print, read_file, str_len
 from strlib import split_lines
 from datatypes import List
 
@@ -21,7 +21,7 @@ fn load_input(filename: str) -> Puzzle:
         if n > x_max:
             x_max = n
         while col < n:
-            let c = str_get(text: line, index: col)
+            let c = line[col]
             if c == '#':
                 galaxies.append(Point(x: col, y: row))
             col += 1

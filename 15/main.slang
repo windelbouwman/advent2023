@@ -1,5 +1,5 @@
  
-from std import read_file, ord, str_get, str_len, print, str_slice
+from std import read_file, ord, str_len, print, str_slice
 from utils import assert
 from strlib import split_lines, split_string, str_to_int
 from datatypes import List
@@ -94,14 +94,10 @@ class HashMap:
 
 
 fn hash(text: str) -> int:
-    let n = str_len(text)
-    let index = 0
     let h = 0
-    while index < n:
-        let c = str_get(text, index)
+    for c in text:
         h = (h + ord(c)) * 17
         h = modulo(value: h, divisor: 256)
-        index += 1
     return h
 
 struct Puzzle:

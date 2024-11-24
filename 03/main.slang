@@ -1,5 +1,5 @@
 
-from std import print, read_file, str_len, str_get, str_slice
+from std import print, read_file, str_len, str_slice
 from strlib import split_lines, is_digit, str_to_int
 from datatypes import List
 from utils import panic
@@ -50,12 +50,12 @@ fn load_data(filename: str) -> Schematic:
         let n = str_len(text: line)
         let i = 0
         while i < n:
-            let c = str_get(text: line, index: i)
+            let c = line[i]
             if is_digit(c):
                 let j = i
                 i += 1
                 while i < n:
-                    c = str_get(text: line, index: i)
+                    c = line[i]
                     if is_digit(c):
                         i += 1
                     else:
