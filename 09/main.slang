@@ -12,7 +12,7 @@ fn main():
     let s = 0
     let s2 = 0
     for line in split_lines(text: read_file(filename)):
-        let numbers = get_numbers(text: line)
+        let numbers = get_numbers(text: line, sep: ' ')
         s += predict(numbers) # part 1
         s2 += backfill(numbers) # part 2
     print("part 1: sum = {s}")

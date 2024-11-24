@@ -50,8 +50,8 @@ fn load_data(filename: str) -> List[Card]:
         # Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
         let parts = split_string(text: line, sep: ':')
         let parts2 = split_string(text: parts.get(index: 1), sep: '|')
-        let winning = get_numbers(text: parts2.get(index: 0))
-        let have = get_numbers(text: parts2.get(index: 1))
+        let winning = get_numbers(text: parts2.get(index: 0), sep: ' ')
+        let have = get_numbers(text: parts2.get(index: 1), sep: ' ')
         cards.append(Card(count: 1, winning, have))
     return cards
 

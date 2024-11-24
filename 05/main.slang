@@ -22,7 +22,7 @@ fn load_data(filename: str) -> Puzzle:
         switch state:
             0:
                 print("Seed: {line}")
-                seeds = get_numbers(text: split_string(text: line, sep: ':').get(index: 1))
+                seeds = get_numbers(text: split_string(text: line, sep: ':').get(index: 1), sep: ' ')
                 state = 1
             1:
                 state = 2
@@ -35,7 +35,7 @@ fn load_data(filename: str) -> Puzzle:
                     state = 2
                     mappings.append(new_mapping(name: mapname, rangemaps))
                 else:
-                    let numbers = get_numbers(text: line)
+                    let numbers = get_numbers(text: line, sep: ' ')
                     rangemaps.append(IntervalMap(destination: numbers.get(index: 0), source: numbers.get(index: 1), length: numbers.get(index: 2)))
         else:
             pass

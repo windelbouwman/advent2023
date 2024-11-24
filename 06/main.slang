@@ -18,8 +18,8 @@ fn load_data(filename: str) -> Puzzle:
     let lines = split_lines(text: read_file(filename))
     let line1 = lines.get(index: 0)
     let line2 = lines.get(index: 1)
-    let times = get_numbers(text: split_string(text: line1, sep: ':').last())
-    let distances = get_numbers(text: split_string(text: line2, sep: ':').last())
+    let times = get_numbers(text: split_string(text: line1, sep: ':').last(), sep: ' ')
+    let distances = get_numbers(text: split_string(text: line2, sep: ':').last(), sep: ' ')
     return Puzzle(times, distances)
 
 fn part1(puzzle: Puzzle):

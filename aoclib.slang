@@ -4,9 +4,9 @@ from strlib import split_string, trim, str_to_int
 from utils import assert
 from datatypes import List, option_unwrap
 
-fn get_numbers(text: str) -> List[int]:
+fn get_numbers(text: str, sep: char) -> List[int]:
     let numbers: List[int] = List()
-    for part in split_string(text, sep: ' '):
+    for part in split_string(text, sep):
         part = trim(part)
         if is_empty(part):
             continue
