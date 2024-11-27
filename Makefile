@@ -19,7 +19,8 @@ all: ${BUILDDIR}/day01.exe ${BUILDDIR}/day02.exe ${BUILDDIR}/day03.exe ${BUILDDI
   ${BUILDDIR}/day12.exe \
   ${BUILDDIR}/day13.exe \
   ${BUILDDIR}/day14.exe \
-  ${BUILDDIR}/day15.exe
+  ${BUILDDIR}/day15.exe \
+  ${BUILDDIR}/day16.exe
 
 ${BUILDDIR}/day%.exe: ${BUILDDIR}/day%.o ${BUILDDIR}/slangrt.o ${BUILDDIR}/aoclib-c.o ${BUILDDIR}/libbase.o ${BUILDDIR}/libaoc.o
 	gcc -o $@ $< ${BUILDDIR}/slangrt.o ${BUILDDIR}/aoclib-c.o ${BUILDDIR}/libbase.o ${BUILDDIR}/libaoc.o -lm
