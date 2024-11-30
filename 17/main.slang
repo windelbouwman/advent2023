@@ -8,6 +8,7 @@ from hashmap import HashMap
 
 fn main() -> int:
     # let grid = load_grid(filename: "17/example.txt")
+    # let grid = load_grid(filename: "17/example2.txt")
     let grid = load_grid(filename: "17/input.txt")
     part1(grid)
     0
@@ -16,19 +17,18 @@ fn cmp_func(a?: State, b?: State) -> bool:
     a.cost < b.cost
 
 fn part1(grid: Grid):
-    let s0 = State(row: 0, col: 0, cost: 0, last: Direction.None(), count: 0)
+    let s1 = State(row: 4, col: 0, cost: grid.get(row: 1, col: 0) + grid.get(row: 2, col: 0) + grid.get(row: 3, col: 0) + grid.get(row: 4, col: 0), last: Direction.Down(), count: 4)
+    let s2 = State(row: 0, col: 4, cost: grid.get(row: 0, col: 1) + grid.get(row: 0, col: 2) + grid.get(row: 0, col: 3) + grid.get(row: 0, col: 4), last: Direction.Right(), count: 4)
     let queue: PriorityQueue[State] = new_priority_queue_with_capacity(capacity: 10000, f: cmp_func)
     let cache: HashMap[int] = HashMap()
-    queue.push(s0)
-    let ctx = Context(grid, queue, cache, best: -1)
+    let ctx = Context(grid, queue, cache, best: 0)
+    push_state(ctx, s1)
+    push_state(ctx, s2)
     while not queue.is_empty():
         let s = queue.pop()
         print("q = {queue.len()}")
-        explore(ctx, s, direction: Direction.Up())
-        explore(ctx, s, direction: Direction.Down())
-        explore(ctx, s, direction: Direction.Left())
-        explore(ctx, s, direction: Direction.Right())
-    print("Part 1: {ctx.best}")
+        explore2(ctx, s)
+    print("Part 2: {ctx.best}")
 
 struct Context:
     grid: Grid
@@ -36,139 +36,91 @@ struct Context:
     cache: HashMap[int]
     best: int
 
-fn explore(ctx: Context, s: State, direction: Direction):
+fn explore2(ctx: Context, s: State):
     let w = ctx.grid.get_width()
     let h = ctx.grid.get_height()
-    let row = case direction:
+
+    case s.last:
         Up:
-            s.row - 1
+            # Try up:
+            if s.row > 0 and s.count < 10:
+                let cost = s.cost + ctx.grid.get(row: s.row - 1, col: s.col)
+                let s1 = State(row: s.row - 1, col: s.col, cost, last: Direction.Up(), count: s.count + 1)
+                push_state(ctx, s1)
+            try_turn_left(ctx, s)
+            try_turn_right(ctx, s)
         Down:
-            s.row + 1
-    else:
-        s.row
-    if row < 0:
-        return
-    if row >= h:
-        return
-
-    let col = case direction:
+            # Try down:
+            if s.row + 1 < h and s.count < 10:
+                let cost = s.cost + ctx.grid.get(row: s.row + 1, col: s.col)
+                let s1 = State(row: s.row + 1, col: s.col, cost, last: Direction.Down(), count: s.count + 1)
+                push_state(ctx, s1)
+            try_turn_left(ctx, s)
+            try_turn_right(ctx, s)
         Left:
-            s.col - 1
+            # Try left:
+            if s.col > 0 and s.count < 10:
+                let cost = s.cost + ctx.grid.get(row: s.row, col: s.col - 1)
+                let s1 = State(row: s.row, col: s.col - 1, cost, last: Direction.Left(), count: s.count + 1)
+                push_state(ctx, s1)
+            try_turn_up(ctx, s)
+            try_turn_down(ctx, s)
         Right:
-            s.col + 1
-    else:
-        s.col
-    if col < 0:
-        return
-    if col >= w:
-        return
-    
-    # Do not go back:
-    if is_reverse(direction, s.last):
-        return
-    
-    let count = if is_same(direction, s.last):
-        s.count + 1
-    else:
-        1
-    
-    # Do not move in the same direction more than 3 times
-    if count > 3:
-        return
+            # Try right:
+            if s.col + 1 < w and s.count < 10:
+                let cost = s.cost + ctx.grid.get(row: s.row, col: s.col + 1)
+                let s1 = State(row: s.row, col: s.col + 1, cost, last: Direction.Right(), count: s.count + 1)
+                push_state(ctx, s1)
+            try_turn_up(ctx, s)
+            try_turn_down(ctx, s)
 
-    let cost = s.cost + ctx.grid.get(row, col)
+fn try_turn_up(ctx: Context, s: State):
+    if s.row > 3:
+        let cost = s.cost + ctx.grid.get(row: s.row - 1, col: s.col) + ctx.grid.get(row: s.row - 2, col: s.col) + ctx.grid.get(row: s.row - 3, col: s.col) + ctx.grid.get(row: s.row - 4, col: s.col)
+        let s1 = State(row: s.row - 4, col: s.col, cost, last: Direction.Up(), count: 4)
+        push_state(ctx, s1)
 
-    let key = "{row},{col},{direction_to_string(direction)},{count}"
+fn try_turn_down(ctx: Context, s: State):
+    let h = ctx.grid.get_height()
+    if s.row + 4 < h:
+        let cost = s.cost + ctx.grid.get(row: s.row + 1, col: s.col) + ctx.grid.get(row: s.row + 2, col: s.col) + ctx.grid.get(row: s.row + 3, col: s.col) + ctx.grid.get(row: s.row + 4, col: s.col)
+        let s1 = State(row: s.row + 4, col: s.col, cost, last: Direction.Down(), count: 4)
+        push_state(ctx, s1)
+
+fn try_turn_left(ctx: Context, s: State):
+    if s.col > 3:
+        let cost = s.cost + ctx.grid.get(row: s.row, col: s.col - 1) + ctx.grid.get(row: s.row, col: s.col - 2) + ctx.grid.get(row: s.row, col: s.col - 3) + ctx.grid.get(row: s.row, col: s.col - 4)
+        let s1 = State(row: s.row, col: s.col - 4, cost, last: Direction.Left(), count: 4)
+        push_state(ctx, s1)
+
+fn try_turn_right(ctx: Context, s: State):
+    let w = ctx.grid.get_width()
+    if s.col + 4 < w:
+        let cost = s.cost + ctx.grid.get(row: s.row, col: s.col + 1) + ctx.grid.get(row: s.row, col: s.col + 2) + ctx.grid.get(row: s.row, col: s.col + 3) + ctx.grid.get(row: s.row, col: s.col + 4)
+        let s1 = State(row: s.row, col: s.col + 4, cost, last: Direction.Right(), count: 4)
+        push_state(ctx, s1)
+
+fn push_state(ctx: Context, s?: State):
+    let key = "{s.row},{s.col},{direction_to_string(s.last)},{s.count}"
+    # print("{key} => {s.cost}")
     let is_cheapest = if ctx.cache.contains(key):
-        let old_cost = ctx.cache.get(key)
         # print("Better way -> {key}")
-        cost < old_cost
+        s.cost < ctx.cache.get(key)
     else:
         true
     
     if is_cheapest:
-        ctx.cache.insert(key, value: cost)
-        let s1 = State(row, col, cost, last: direction, count)
-        ctx.queue.push(s1)
+        ctx.cache.insert(key, value: s.cost)
+        ctx.queue.push(s)
 
     # Keep track of best option to reach bottom right
-    if row == w - 1 and col == h - 1:
-        if ctx.best < 0 or (ctx.best > 0 and cost < ctx.best):
-            ctx.best = cost
-            print("{key} -> {cost}")
-
-fn is_reverse(direction1?: Direction, direction2?: Direction) -> bool:
-    """ See if directions are opposite directions """
-    case direction1:
-        Up:
-            case direction2:
-                Down:
-                    true
-            else:
-                false
-        Down:
-            case direction2:
-                Up:
-                    true
-            else:
-                false
-        Left:
-            case direction2:
-                Right:
-                    true
-            else:
-                false
-        Right:
-            case direction2:
-                Left:
-                    true
-            else:
-                false
-        None:
-            false
-
-fn is_same(direction1?: Direction, direction2?: Direction) -> bool:
-    """ See if directions are the same directions """
-    case direction1:
-        Up:
-            case direction2:
-                Up:
-                    true
-            else:
-                false
-        Down:
-            case direction2:
-                Down:
-                    true
-            else:
-                false
-        Left:
-            case direction2:
-                Left:
-                    true
-            else:
-                false
-        Right:
-            case direction2:
-                Right:
-                    true
-            else:
-                false
-        None:
-            false
-
-fn direction_to_string(direction: Direction) -> str:
-    case direction:
-        Up:
-            "U"
-        Down:
-            "D"
-        Left:
-            "L"
-        Right:
-            "R"
-        None:
-            "N"
+    let w = ctx.grid.get_width()
+    let h = ctx.grid.get_height()
+    if s.row == h - 1 and s.col == w - 1:
+        if ctx.best == 0 or (ctx.best > 0 and s.cost < ctx.best):
+            ctx.best = s.cost
+            print("{key} -> {s.cost}")
+    pass
 
 struct State:
     row: int
@@ -182,7 +134,17 @@ enum Direction:
     Down
     Left
     Right
-    None
+
+fn direction_to_string(direction?: Direction) -> str:
+    case direction:
+        Up:
+            "U"
+        Down:
+            "D"
+        Left:
+            "L"
+        Right:
+            "R"
 
 fn load_grid(filename: str) -> Grid:
     let rows: Vector[Vector[int]] = new_vector()
