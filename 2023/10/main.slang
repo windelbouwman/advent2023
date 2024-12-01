@@ -2,7 +2,7 @@
 from std import read_file, print, str_len, float_to_str
 from strlib import split_lines, find_char
 from datatypes import List, Option
-from hashmap import HashMap
+from hashmap import HashMapStr
 from shapelib import Point, str_point, Path, shoelace
 
 fn main():
@@ -142,7 +142,7 @@ fn try_right(p: Point, maze: Maze) -> Option[Point]:
 
 class Maze:
     var rows: List[str]
-    var scores: HashMap[int] = HashMap()
+    var scores: HashMapStr[int] = HashMapStr()
 
     fn get_char(p?: Point) -> char:
         if p.y < 0:

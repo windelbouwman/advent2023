@@ -2,7 +2,7 @@
 from std import read_file, print, str_get, str_len
 from strlib import split_lines, split_string
 from datatypes import List
-from hashmap import HashMap
+from hashmap import HashMapStr
 from aoclib import get_numbers
 
 fn main():
@@ -15,7 +15,7 @@ fn part1(puzzle: Puzzle):
     print("Part 1")
     let s = 0
     for row in puzzle.rows:
-        let cache: HashMap[int] = HashMap()
+        let cache: HashMapStr[int] = HashMapStr()
         s += try_combo_2(cache, row, start: 0, group: 0)
     print("Sum: {s}")
 
@@ -38,7 +38,7 @@ fn unfold(puzzle: Puzzle) -> Puzzle:
         rows.append(Row(pattern, damaged))
     Puzzle(rows)
 
-fn try_combo_2(cache: HashMap[int], row: Row, start: int, group: int) -> int:
+fn try_combo_2(cache: HashMapStr[int], row: Row, start: int, group: int) -> int:
     let key = "{start},{group}"
 
     if cache.contains(key):
@@ -112,6 +112,3 @@ struct Puzzle:
 struct Row:
     pattern: str
     damaged: List[int]
-
-
-

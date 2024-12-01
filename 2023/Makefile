@@ -3,7 +3,7 @@
 .PRECIOUS: ${BUILDDIR}/%.c
 
 BUILDDIR=build
-SLANG_FOLDER=./sauce-os
+SLANG_FOLDER=../sauce-os
 BASE_LIB_SRCS := $(wildcard ${SLANG_FOLDER}/Libs/base/*.slang)
 BASE_LIB_SRCS += ${SLANG_FOLDER}/runtime/std.slang
 AOC_LIB_SRCS=aoclib.slang
@@ -49,6 +49,10 @@ ${BUILDDIR}/libbase.c ${BUILDDIR}/libbase.json: ${BASE_LIB_SRCS} | ${BUILDDIR}
 
 ${BUILDDIR}:
 	mkdir -p ${BUILDDIR}
+
+profile: ${BUILDDIR}/day17.exe
+	valgrind --tool=callgrind --callgrind-out-file=${BUILDDIR}/callgrind.out ./${BUILDDIR}/day17.exe
+	kcachegrind ${BUILDDIR}/callgrind.out
 
 clean:
 	rm -rf ${BUILDDIR}
