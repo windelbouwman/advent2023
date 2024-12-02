@@ -9,7 +9,8 @@ BASE_LIB_SRCS += ${SLANG_FOLDER}/runtime/std.slang
 AOC_LIB_SRCS=aoclib.slang
 CFLAGS=-I${SLANG_FOLDER}/runtime
 
-all: ${BUILDDIR}/day01.exe
+all: ${BUILDDIR}/day01.exe \
+  ${BUILDDIR}/day02.exe
 
 ${BUILDDIR}/day%.exe: ${BUILDDIR}/day%.o ${BUILDDIR}/slangrt.o ${BUILDDIR}/aoclib-c.o ${BUILDDIR}/libbase.o ${BUILDDIR}/libaoc.o
 	gcc -o $@ $< ${BUILDDIR}/slangrt.o ${BUILDDIR}/aoclib-c.o ${BUILDDIR}/libbase.o ${BUILDDIR}/libaoc.o -lm
