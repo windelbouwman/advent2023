@@ -5,8 +5,8 @@ from functools import map, all
 from datatypes import List
 
 fn main() -> int:
-    # let reports = load_puzzle(filename: "02/input.txt")
-    let reports = load_puzzle(filename: "02/example.txt")
+    let reports = load_puzzle(filename: "02/input.txt")
+    # let reports = load_puzzle(filename: "02/example.txt")
     part1(reports)
     part2(reports)
     0
