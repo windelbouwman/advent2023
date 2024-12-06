@@ -3,7 +3,7 @@ from math import abs
 from strlib import str_to_int, split_string, split_lines
 from utils import panic
 from datatypes import List
-from hashmap import HashMapInt
+from hashmap import HashMap, new_hashmap_int
 from sorting import sort_list
 
 fn main() -> int:
@@ -45,7 +45,7 @@ fn int_cmp(a: int, b: int) -> bool:
     a < b
 
 fn part2(puzzle: Puzzle):
-    let counts: HashMapInt[int] = HashMapInt()
+    let counts: HashMap[int,int] = new_hashmap_int()
     for x in puzzle.right:
         let value = if counts.contains(key: x):
             counts.get(key: x) + 1

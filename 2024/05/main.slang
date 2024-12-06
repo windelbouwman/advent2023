@@ -18,19 +18,19 @@ fn part1(puzzle: Puzzle):
     let s = 0
     for page in puzzle.pages:
         if is_valid(g: puzzle.g, page):
-            s += page[page.len() / 2]
+            s += str_to_int(page[page.len() / 2])
     print("Part1: {s}")
 
-fn is_valid(g: DiGraph, page: List[int]) -> bool:
+fn is_valid(g: DiGraph, page: List[str]) -> bool:
     let used = StringSet()
     for x in page:
-        used.add(str(x))
+        used.add(x)
     let visited = StringSet()
     for x in page:
-        for dep in g.succ.get(key: str(x)):
+        for dep in g.succ.get(key: x):
             if used.contains(dep) and not visited.contains(dep):
                 return false
-        visited.add(str(x))
+        visited.add(x)
     true
 
 fn part2(puzzle: Puzzle):
@@ -38,14 +38,14 @@ fn part2(puzzle: Puzzle):
     for page in puzzle.pages:
         if not is_valid(g: puzzle.g, page):
             page = sort_page(g: puzzle.g, page)
-            s += page[page.len() / 2]
+            s += str_to_int(page[page.len() / 2])
     print("Part2: {s}")
 
-fn sort_page(g: DiGraph, page: List[int]) -> List[int]:
-    let res: List[int] = List()
+fn sort_page(g: DiGraph, page: List[str]) -> List[str]:
+    let res: List[str] = List()
     let used = StringSet()
     for x in page:
-        used.add(str(x))
+        used.add(x)
     let visited = StringSet()
     while not page.is_empty():
         let x = page.pop_front()
@@ -56,13 +56,13 @@ fn sort_page(g: DiGraph, page: List[int]) -> List[int]:
                 solved = false
                 break
         if solved:
-            visited.add(str(x))
+            visited.add(x)
             res.append(x)
     res
 
 fn load_puzzle(filename: str) -> Puzzle:
     let g = DiGraph()
-    let pages: List[List[int]] = List()
+    let pages: List[List[str]] = List()
     let lines = split_lines(text: read_file(filename))
     let section = 0
     for line in lines:
@@ -70,14 +70,12 @@ fn load_puzzle(filename: str) -> Puzzle:
             section += 1
         elif section == 0:
             let parts = split_string(text: line, sep: '|')
-            let dep = str_to_int(parts[0])
-            let x = str_to_int(parts[1])
-            g.add_edge(src: str(x), dst: str(dep))
+            g.add_edge(src: parts[1], dst: parts[0])
         elif section == 1:
-            let page = map(values: split_string(text: line, sep: ','), function: str_to_int)
+            let page = split_string(text: line, sep: ',')
             pages.append(page)
     Puzzle(g, pages)
 
 struct Puzzle:
     g: DiGraph
-    pages: List[List[int]]
+    pages: List[List[str]]

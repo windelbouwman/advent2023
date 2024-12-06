@@ -64,6 +64,45 @@ fn rfind_string(text: str, pattern: str) -> int:
             index -= 1
     return -1
 
-extern "foo" fn round_up(value: float) -> int
-extern "foo" fn round_down(value: float) -> int
 
+enum Direction:
+    Up
+    Down
+    Left
+    Right
+
+fn turn_right(direction?: Direction) -> Direction:
+    case direction:
+        Up:
+            Direction.Right()
+        Down:
+            Direction.Left()
+        Left:
+            Direction.Up()
+        Right:
+            Direction.Down()
+
+fn dir_to_str(direction?: Direction) -> str:
+    case direction:
+        Up:
+            "^"
+        Down:
+            "V"
+        Left:
+            "<"
+        Right:
+            ">"
+
+fn dir_eq(a?: Direction, b?: Direction) -> bool:
+    dir_hash(a) == dir_hash(b)
+
+fn dir_hash(d?: Direction) -> int:
+    case d:
+        Up:
+            1
+        Down:
+            2
+        Left:
+            3
+        Right:
+            4
