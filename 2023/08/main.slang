@@ -6,13 +6,14 @@ from datatypes import List
 from dicttype import Dictionary
 
 
-fn main():
+pub fn main() -> int:
     # let puzzle = load_data(filename: "example.txt")
     # let puzzle = load_data(filename: "example3.txt")
     let puzzle = load_data(filename: "input.txt")
     part1(puzzle)
     # Part 2 takes too much memory .....
     # part2(puzzle)
+    0
 
 fn part1(puzzle: Puzzle):
     print("Part 1")

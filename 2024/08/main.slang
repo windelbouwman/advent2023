@@ -1,13 +1,11 @@
 
-from std import print, read_file
-from strlib import split_lines, str_to_int, split_string, trim, str_len
-from vectype import Vector, new_vector
-from settype import Set, new_str_set
+from std import print, read_file, str_len
+from strlib import split_lines
+from settype import new_str_set
 from hashmap import new_hashmap_char, HashMap
-from functools import map
 from datatypes import List
 
-fn main() -> int:
+pub fn main() -> int:
     let puzzle = load_puzzle(filename: "08/input.txt")
     # let puzzle = load_puzzle(filename: "08/example.txt")
     part1(puzzle)

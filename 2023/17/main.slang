@@ -1,12 +1,10 @@
 from std import print, read_file
-from utils import panic
-from datatypes import List
 from vectype import Vector, new_vector
 from heapq import PriorityQueue, new_priority_queue_with_capacity
 from strlib import split_lines, digit_to_int
-from hashmap import HashMap2, HashableApi
+from hashmap import HashMap, new_hashmap
 
-fn main() -> int:
+pub fn main() -> int:
     # let grid = load_grid(filename: "17/example.txt")
     # let grid = load_grid(filename: "17/example2.txt")
     let grid = load_grid(filename: "17/input.txt")
@@ -17,8 +15,7 @@ fn part1(grid: Grid):
     let s1 = State(row: 4, col: 0, cost: grid.get(row: 1, col: 0) + grid.get(row: 2, col: 0) + grid.get(row: 3, col: 0) + grid.get(row: 4, col: 0), last: Direction.Down(), count: 4)
     let s2 = State(row: 0, col: 4, cost: grid.get(row: 0, col: 1) + grid.get(row: 0, col: 2) + grid.get(row: 0, col: 3) + grid.get(row: 0, col: 4), last: Direction.Right(), count: 4)
     let queue: PriorityQueue[State] = new_priority_queue_with_capacity(capacity: 10000, f: cmp_func)
-    let api: HashableApi[State] = HashableApi(f_hash: state_hash, f_eq: state_eq)
-    let cache: HashMap2[State, int] = HashMap2(f: api)
+    let cache: HashMap[State, int] = new_hashmap(f_hash: state_hash, f_eq: state_eq)
     let ctx = Context(grid, queue, cache, best: 0)
     push_state(ctx, s1)
     push_state(ctx, s2)
@@ -31,7 +28,7 @@ fn part1(grid: Grid):
 struct Context:
     grid: Grid
     queue: PriorityQueue[State]
-    cache: HashMap2[State, int]
+    cache: HashMap[State, int]
     best: int
 
 fn explore2(ctx: Context, s: State):

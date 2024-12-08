@@ -3,12 +3,12 @@ from std import print, read_file, str_len
 from strlib import split_lines
 from datatypes import List
 
-fn main() -> int:
+pub fn main() -> int:
     # let filename = "example.txt"
     let filename = "input.txt"
     let puzzle = load_input(filename)
     part1(puzzle)
-    return 0
+    0
 
 fn load_input(filename: str) -> Puzzle:
     let galaxies: List[Point] = List()
@@ -28,7 +28,7 @@ fn load_input(filename: str) -> Puzzle:
         row += 1
     let y_max = row
     print("Dimensions: {x_max}x{y_max}")
-    return Puzzle(galaxies, x_max, y_max)
+    Puzzle(galaxies, x_max, y_max)
 
 struct Point:
     x: int

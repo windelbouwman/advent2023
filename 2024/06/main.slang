@@ -3,10 +3,10 @@ from std import print, read_file, str_len
 from vectype import Vector, new_vector
 from strlib import split_lines
 from utils import panic
-from settype import new_str_set, Set, new_set
-from aoclib import Direction, dir_eq, turn_right, dir_hash
+from settype import new_str_set
+from aoclib import Direction, turn_right, dir_hash
 
-fn main() -> int:
+pub fn main() -> int:
     let grid = load_grid(filename: "06/input.txt")
     # let grid = load_grid(filename: "06/example.txt")
     let s = find_start(grid)
@@ -170,12 +170,6 @@ struct State:
 
 fn copy_state(s?: State) -> State:
     State(pos: s.pos, dir: s.dir)
-
-fn state_eq(s1?: State, s2?: State) -> bool:
-    s1.pos == s2.pos and dir_eq(s1.dir, s2.dir)
-
-fn state_hash(s?: State) -> int:
-    s.pos * 13 + dir_hash(s.dir) * 73
 
 class Grid:
     var width: int

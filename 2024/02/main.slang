@@ -4,7 +4,7 @@ from strlib import str_to_int, split_string, split_lines
 from functools import map, all
 from datatypes import List
 
-fn main() -> int:
+pub fn main() -> int:
     let reports = load_puzzle(filename: "02/input.txt")
     # let reports = load_puzzle(filename: "02/example.txt")
     part1(reports)

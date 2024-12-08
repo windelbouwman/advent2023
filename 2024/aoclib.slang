@@ -65,13 +65,13 @@ fn rfind_string(text: str, pattern: str) -> int:
     return -1
 
 
-enum Direction:
+pub enum Direction:
     Up
     Down
     Left
     Right
 
-fn turn_right(direction?: Direction) -> Direction:
+pub fn turn_right(direction?: Direction) -> Direction:
     case direction:
         Up:
             Direction.Right()
@@ -96,7 +96,7 @@ fn dir_to_str(direction?: Direction) -> str:
 fn dir_eq(a?: Direction, b?: Direction) -> bool:
     dir_hash(a) == dir_hash(b)
 
-fn dir_hash(d?: Direction) -> int:
+pub fn dir_hash(d?: Direction) -> int:
     case d:
         Up:
             1

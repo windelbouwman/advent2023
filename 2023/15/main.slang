@@ -5,12 +5,13 @@ from strlib import split_lines, split_string, str_to_int
 from datatypes import List
 from math import modulo
 
-fn main():
+pub fn main() -> int:
     # let filename = "example.txt"
     let filename = "input.txt"
     let puzzle = load_puzzle(filename)
     # part1(puzzle)
     part2(puzzle)
+    0
 
 fn load_puzzle(filename: str) -> Puzzle:
     let lines = split_lines(text: read_file(filename))

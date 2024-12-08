@@ -2,20 +2,21 @@
 from std import read_file, print, str_get, str_len
 from strlib import split_lines, split_string
 from datatypes import List
-from hashmap import HashMapStr
+from hashmap import HashMap, new_hashmap_str
 from aoclib import get_numbers
 
-fn main():
+pub fn main() -> int:
     # let puzzle = load_data(filename: "12/example1.txt")
     let puzzle = load_data(filename: "12/input.txt")
     part1(puzzle)
     part2(puzzle)
+    0
 
 fn part1(puzzle: Puzzle):
     print("Part 1")
     let s = 0
     for row in puzzle.rows:
-        let cache: HashMapStr[int] = HashMapStr()
+        let cache: HashMap[str,int] = new_hashmap_str()
         s += try_combo_2(cache, row, start: 0, group: 0)
     print("Sum: {s}")
 
@@ -38,7 +39,7 @@ fn unfold(puzzle: Puzzle) -> Puzzle:
         rows.append(Row(pattern, damaged))
     Puzzle(rows)
 
-fn try_combo_2(cache: HashMapStr[int], row: Row, start: int, group: int) -> int:
+fn try_combo_2(cache: HashMap[str,int], row: Row, start: int, group: int) -> int:
     let key = "{start},{group}"
 
     if cache.contains(key):

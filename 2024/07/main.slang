@@ -4,7 +4,7 @@ from strlib import split_lines, str_to_int, split_string, trim
 from functools import map
 from datatypes import List
 
-fn main() -> int:
+pub fn main() -> int:
     let equations = load_equations(filename: "07/input.txt")
     # let equations = load_equations(filename: "07/example.txt")
     part(1, equations)

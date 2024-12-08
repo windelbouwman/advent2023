@@ -3,7 +3,7 @@ from std import print, read_file
 from vectype import Vector, new_vector
 from strlib import split_lines
 
-fn main() -> int:
+pub fn main() -> int:
     let grid = load_grid(filename: "04/input.txt")
     # let grid = load_grid(filename: "04/example.txt")
     part1(grid)

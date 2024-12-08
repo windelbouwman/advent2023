@@ -1,16 +1,17 @@
 
 from std import read_file, print
-from strlib import split_lines, trim, split_string, string_compare, str_to_int
+from strlib import split_lines, split_string, str_to_int
 from datatypes import List
 from dicttype import Dictionary
 from sorting import sort_list
 from utils import panic, assert
 
-fn main():
+pub fn main() -> int:
     # let puzzle = load_data("example.txt")
     let puzzle = load_data(filename: "input.txt")
     # let puzzle = load_data(filename: "example.txt")
     part1(puzzle)
+    0
 
 fn load_data(filename: str) -> Puzzle:
     let cards = 1
@@ -166,4 +167,3 @@ struct Hand:
     cards: List[int]
     typ: int
     bid: int
-

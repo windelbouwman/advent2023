@@ -1,7 +1,7 @@
 from std import print, read_file
 from vectype import Vector, new_vector
 from strlib import split_lines
-from hashmap import HashMapStr
+from hashmap import HashMap, new_hashmap_str
 
 fn main() -> int:
     print("1")
@@ -10,7 +10,7 @@ fn main() -> int:
     move_north(grid)
     print("part 1 = {calculate_load(grid)}")
 
-    let cache: HashMapStr[int] = HashMapStr()
+    let cache: HashMap[str,int] = new_hashmap_str()
     let cycle_count = 0
     let limit = 1000000000
     while cycle_count < limit:

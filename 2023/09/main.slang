@@ -6,7 +6,7 @@ from functools import all
 from utils import assert
 from datatypes import List
 
-fn main():
+pub fn main() -> int:
     # let filename = "example.txt"
     let filename = "input.txt"
     let s = 0
@@ -17,6 +17,7 @@ fn main():
         s2 += backfill(numbers) # part 2
     print("part 1: sum = {s}")
     print("part 2: sum = {s2}")
+    0
 
 fn predict(numbers: List[int]) -> int:
     if all_zeros(numbers):
@@ -52,4 +53,3 @@ fn diff(numbers: List[int]) -> List[int]:
             differences.append(n - p)
         p = n
     return differences
-

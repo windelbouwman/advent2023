@@ -1,18 +1,19 @@
 
 
-from std import read_file, print, str_len, float_to_str
-from strlib import split_lines, trim, split_string, str_to_int
+from std import read_file, print
+from strlib import split_lines, split_string, str_to_int
 from datatypes import List
-from aoclib import get_numbers, find_min_value, round_down, round_up
+from aoclib import get_numbers, round_down, round_up
 from math import sqrt
 from functools import zip
 
 
-fn main():
+pub fn main() -> int:
     # let puzzle = load_data(filename: "example.txt")
     let puzzle = load_data(filename: "input.txt")
     part1(puzzle)
     part2(puzzle)
+    0
 
 fn load_data(filename: str) -> Puzzle:
     let lines = split_lines(text: read_file(filename))

@@ -5,7 +5,7 @@ from strlib import split_lines
 from datatypes import List
 from vectype import Vector, new_vector
 
-fn main() -> int:
+pub fn main() -> int:
     # let puzzle = load_data(filename: "13/example.txt")
     let grids = load_data(filename: "13/input.txt")
     part1(grids)

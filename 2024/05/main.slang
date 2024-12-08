@@ -1,13 +1,11 @@
 
 from std import print, read_file
-from vectype import Vector, new_vector
 from strlib import split_lines, split_string, str_to_int
-from functools import map
 from datatypes import List
 from graphlib import DiGraph
 from settype import new_str_set
 
-fn main() -> int:
+pub fn main() -> int:
     let puzzle = load_puzzle(filename: "05/input.txt")
     # let puzzle = load_puzzle(filename: "05/example.txt")
     part1(puzzle)

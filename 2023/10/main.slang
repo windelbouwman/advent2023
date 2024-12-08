@@ -2,10 +2,10 @@
 from std import read_file, print, str_len, float_to_str
 from strlib import split_lines, find_char
 from datatypes import List, Option
-from hashmap import HashMapStr
+from hashmap import HashMap, new_hashmap_str
 from shapelib import Point, str_point, Path, shoelace
 
-fn main():
+pub fn main() -> int:
     # let filename = "example.txt"
     # let filename = "example3.txt"  # enclosed = 4
     # let filename = "example4.txt"  # enclosed = 10
@@ -27,6 +27,7 @@ fn main():
     let maze = Maze(rows)
 
     part1(maze, s_pos)
+    0
     
 fn part1(maze: Maze, s_pos: Point):
     # Part 1: 
@@ -142,7 +143,7 @@ fn try_right(p: Point, maze: Maze) -> Option[Point]:
 
 class Maze:
     var rows: List[str]
-    var scores: HashMapStr[int] = HashMapStr()
+    var scores: HashMap[str,int] = new_hashmap_str()
 
     fn get_char(p?: Point) -> char:
         if p.y < 0:

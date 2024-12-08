@@ -1,10 +1,9 @@
 from std import print, read_file
 from strlib import str_to_int
-from functools import map, all, sum_integers
-from datatypes import List
+from functools import map, sum_integers
 from regex import find_all_text
 
-fn main() -> int:
+pub fn main() -> int:
     let text = read_file(filename: "03/input.txt")
     # let text = read_file(filename: "03/example.txt")
     # let text = read_file(filename: "03/example2.txt")

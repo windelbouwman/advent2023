@@ -1,12 +1,11 @@
 from std import print, read_file
 from math import abs
 from strlib import str_to_int, split_string, split_lines
-from utils import panic
 from datatypes import List
 from hashmap import HashMap, new_hashmap_int
 from sorting import sort_list
 
-fn main() -> int:
+pub fn main() -> int:
     let puzzle = load_file(filename: "01/input.txt")
     # let puzzle = load_file(filename: "01/example.txt")
     part1(puzzle)
