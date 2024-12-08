@@ -5,7 +5,7 @@ from strlib import split_lines, split_string, str_to_int
 from functools import map
 from datatypes import List
 from graphlib import DiGraph
-from settype import StringSet
+from settype import new_str_set
 
 fn main() -> int:
     let puzzle = load_puzzle(filename: "05/input.txt")
@@ -22,10 +22,10 @@ fn part1(puzzle: Puzzle):
     print("Part1: {s}")
 
 fn is_valid(g: DiGraph, page: List[str]) -> bool:
-    let used = StringSet()
+    let used = new_str_set()
     for x in page:
         used.add(x)
-    let visited = StringSet()
+    let visited = new_str_set()
     for x in page:
         for dep in g.succ.get(key: x):
             if used.contains(dep) and not visited.contains(dep):
@@ -43,10 +43,10 @@ fn part2(puzzle: Puzzle):
 
 fn sort_page(g: DiGraph, page: List[str]) -> List[str]:
     let res: List[str] = List()
-    let used = StringSet()
+    let used = new_str_set()
     for x in page:
         used.add(x)
-    let visited = StringSet()
+    let visited = new_str_set()
     while not page.is_empty():
         let x = page.pop_front()
         let solved = true

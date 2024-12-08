@@ -1,9 +1,9 @@
 
-from std import print, read_file
+from std import print, read_file, str_len
 from vectype import Vector, new_vector
 from strlib import split_lines
 from utils import panic
-from settype import StringSet, Set, new_set
+from settype import new_str_set, Set, new_set
 from aoclib import Direction, dir_eq, turn_right, dir_hash
 
 fn main() -> int:
@@ -16,16 +16,18 @@ fn main() -> int:
 
 fn part1(grid: Grid, s: State):
     s = copy_state(s)
-    let visited = StringSet()
-    let w = grid.width()
-    let h = grid.height()
+    let visited = new_str_set()
+    let w = grid.width
+    print("W={w}")
+    let h = grid.height
+    let N = w * h
     loop:
-        let key = "{s.row},{s.col}"
+        let key = "{s.pos}"
         visited.add(key)
 
         # New position:
-        let row = s.row
-        let col = s.col
+        let row = s.pos / w
+        let col = s.pos - (row * w)
         case s.dir:
             Up:
                 row -= 1
@@ -39,10 +41,12 @@ fn part1(grid: Grid, s: State):
         # Check out of grid:
         if row < 0 or row >= h or col < 0 or col >= w:
             break
-        let c = grid.get(row, col)
+        
+        let pos = row * w + col
+
+        let c = grid.get(pos)
         if c == '.':
-            s.row = row
-            s.col = col
+            s.pos = pos
         elif c == '#':
             s.dir = turn_right(s.dir)
         else:
@@ -53,13 +57,14 @@ fn part2(grid: Grid, s: State):
     let state_grid = new_state_grid(grid)
     let s0 = s
     s = copy_state(s)
-    let options = StringSet()
-    let w = grid.width()
-    let h = grid.height()
+    let options = new_str_set()
+    let w = grid.width
+    let h = grid.height
+    let N = w * h
     loop:
         # New position:
-        let row = s.row
-        let col = s.col
+        let row = s.pos / w
+        let col = s.pos - (row * w)
         case s.dir:
             Up:
                 row -= 1
@@ -69,45 +74,46 @@ fn part2(grid: Grid, s: State):
                 col -= 1
             Right:
                 col += 1
-        
+
         # Check out of grid:
         if row < 0 or row >= h or col < 0 or col >= w:
             break
+        
+        let pos = row * w + col
 
         # Check next cell:
-        let c = grid.get(row, col)
+        let c = grid.get(pos)
         if c == '.':
-            print("Check loop when blocking {s.row},{s.col}")
-            let key = "{row},{col}"
+            # print("Check loop when blocking {s.row},{s.col}")
+            let key = "{pos}"
             if not options.contains(key):
-                grid.set(row, col, value: '#')
-                if would_loop(grid, state_grid, s: s0, block_row: row, block_col: col):
+                grid.set(pos, value: '#')
+                if would_loop(grid, state_grid, s: s0):
                     options.add(key)
-                grid.set(row, col, value: '.')
-            s.row = row
-            s.col = col
+                grid.set(pos, value: '.')
+            s.pos = pos
         elif c == '#':
             s.dir = turn_right(s.dir)
         else:
             panic("Bad char: {c}")
     print("Part2: {options.len()}")
 
-fn would_loop(grid: Grid, state_grid: StateGrid, s: State, block_row: int, block_col: int) -> bool:
+fn would_loop(grid: Grid, state_grid: StateGrid, s: State) -> bool:
     """ Check if we would loop if we would need to turn and step once """
-    # let visited: Set[State] = new_set(f_hash: state_hash, f_eq: state_eq)
     state_grid.clear()
-    let w = grid.width()
-    let h = grid.height()
+    let w = grid.width
+    let h = grid.height
+    let N = w * h
     s = copy_state(s)
     loop:
         if state_grid.contains(s):
             return true
         else:
-            state_grid.add(copy_state(s))
+            state_grid.add(s)
 
         # New position:
-        let row = s.row
-        let col = s.col
+        let row = s.pos / w
+        let col = s.pos - (row * w)
         case s.dir:
             Up:
                 row -= 1
@@ -121,12 +127,16 @@ fn would_loop(grid: Grid, state_grid: StateGrid, s: State, block_row: int, block
         # Check out of grid:
         if row < 0 or row >= h or col < 0 or col >= w:
             break
+        
+        let pos = row * w + col
+        # Check out of grid:
+        if pos < 0 or pos >= N:
+            break
 
         # Check next cell:
-        let c = grid.get(row, col)
+        let c = grid.get(pos)
         if c == '.': # Move ahead
-            s.row = row
-            s.col = col
+            s.pos = pos
         elif c == '#': # Turn
             s.dir = turn_right(s.dir)
         else:
@@ -134,95 +144,74 @@ fn would_loop(grid: Grid, state_grid: StateGrid, s: State, block_row: int, block
     false
 
 fn find_start(grid: Grid) -> State:
-    let row = 0
-    while row < grid.height():
-        let col = 0
-        while col < grid.width():
-            if grid.get(row, col) == '^':
-                let s = State(row, col, dir: Direction.Up())
-                grid.set(row, col, value: '.')
-                return s
-            col += 1
-        row += 1
+    let pos = 0
+    while pos < grid.width * grid.height:
+        if grid.get(pos) == '^':
+            let s = State(pos, dir: Direction.Up())
+            grid.set(pos, value: '.')
+            return s
+        pos += 1
     panic("Start not found!")
 
 fn load_grid(filename: str) -> Grid:
-    let rows: Vector[Vector[char]] = new_vector()
+    let cells: Vector[char] = new_vector()
     let lines = split_lines(text: read_file(filename))
+    let width = str_len(text: lines[0])
+    let height = lines.len()
     for line in lines:
         let row: Vector[char] = new_vector()
         for c in line:
-            row.append(c)
-        rows.append(row)
-    Grid(rows)
+            cells.append(c)
+    Grid(width, height, cells)
 
 struct State:
-    row: int
-    col: int
+    pos: int
     dir: Direction
 
 fn copy_state(s?: State) -> State:
-    State(row: s.row, col: s.col, dir: s.dir)
+    State(pos: s.pos, dir: s.dir)
 
 fn state_eq(s1?: State, s2?: State) -> bool:
-    s1.row == s2.row and s1.col == s2.col and dir_eq(s1.dir, s2.dir)
+    s1.pos == s2.pos and dir_eq(s1.dir, s2.dir)
 
 fn state_hash(s?: State) -> int:
-    s.row * 13 + s.col * 37  + dir_hash(s.dir) * 73
+    s.pos * 13 + dir_hash(s.dir) * 73
 
 class Grid:
-    var rows: Vector[Vector[char]]
+    var width: int
+    var height: int
+    var cells: Vector[char]
 
-    fn width() -> int:
-        rows[0].len()
-    
-    fn height() -> int:
-        rows.len()
+    fn get(pos: int) -> char:
+        cells[pos]
 
-    fn get(row: int, col: int) -> char:
-        rows[row][col]
-
-    fn set(row: int, col: int, value: char):
-        rows[row].set(index: col, value)
-
-    fn dump():
-        for row in rows:
-            let txt = ""
-            for c in row:
-                txt = txt + "{c}"
-            print(txt)
-        print("")
+    fn set(pos: int, value: char):
+        cells.set(index: pos, value)
 
 fn new_state_grid(grid: Grid) -> StateGrid:
-    let rows: Vector[Vector[int]] = new_vector()
-    let row_nr = 0
-    while row_nr < grid.height():
-        let row: Vector[int] = new_vector()
-        let col_nr = 0
-        while col_nr < grid.width():
-            row.append(0)
-            col_nr += 1
-        rows.append(row)
-        row_nr += 1
-    StateGrid(rows)
+    let data: Vector[int] = new_vector()
+    let i = 0
+    while i < grid.cells.len():
+        data.append(0)
+        i += 1
+    StateGrid(data)
 
 class StateGrid:
-    var rows: Vector[Vector[int]]
+    var data: Vector[int]
 
     fn contains(s?: State) -> bool:
-        let value = rows[s.row][s.col]
+        let value = data[s.pos]
         let mask = 1 << dir_hash(s.dir)
         value & mask != 0
 
     fn add(s?: State):
         let mask = 1 << dir_hash(s.dir)
-        let value = rows[s.row][s.col]
+        let value = data[s.pos]
         value = value | mask
-        rows[s.row].set(index: s.col, value)
+        data.set(index: s.pos, value)
 
     fn clear():
-        for row in rows:
-            let index = 0
-            while index < row.len():
-                row.set(index, value: 0)
-                index += 1
+        let index = 0
+        while index < data.len():
+            data.set(index, value: 0)
+            index += 1
