@@ -1,7 +1,7 @@
 
 from std import print, read_file
 from strlib import digit_to_int, trim
-from datatypes import List, option_unwrap
+from datatypes import List
 from vectype import Vector, new_vector, new_vector_of_size
 
 pub fn main() -> int:
