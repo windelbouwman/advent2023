@@ -106,11 +106,6 @@ fn would_loop(grid: Grid, state_grid: StateGrid, s: State) -> bool:
     let N = w * h
     s = copy_state(s)
     loop:
-        if state_grid.contains(s):
-            return true
-        else:
-            state_grid.add(s)
-
         # New position:
         let row = s.pos / w
         let col = s.pos - (row * w)
@@ -138,6 +133,10 @@ fn would_loop(grid: Grid, state_grid: StateGrid, s: State) -> bool:
         if c == '.': # Move ahead
             s.pos = pos
         elif c == '#': # Turn
+            if state_grid.contains(s):
+                return true
+            else:
+                state_grid.add(s)
             s.dir = turn_right(s.dir)
         else:
             panic("Bad char: {c}")

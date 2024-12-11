@@ -19,7 +19,8 @@ all: ${BUILDDIR}/day01.exe \
   ${BUILDDIR}/day07.exe \
   ${BUILDDIR}/day08.exe \
   ${BUILDDIR}/day09.exe \
-  ${BUILDDIR}/day10.exe
+  ${BUILDDIR}/day10.exe \
+  ${BUILDDIR}/day11.exe
 
 ${BUILDDIR}/day%.exe: ${BUILDDIR}/day%.o ${BUILDDIR}/slangrt.o ${BUILDDIR}/aoclib-c.o ${BUILDDIR}/libbase.o ${BUILDDIR}/libregex.o ${BUILDDIR}/libaoc.o
 	gcc -o $@ $< ${BUILDDIR}/slangrt.o ${BUILDDIR}/aoclib-c.o ${BUILDDIR}/libbase.o ${BUILDDIR}/libregex.o  ${BUILDDIR}/libaoc.o -lm
@@ -51,7 +52,7 @@ ${BUILDDIR}/libbase.c ${BUILDDIR}/libbase.json: ${BASE_LIB_SRCS} | ${BUILDDIR}
 ${BUILDDIR}:
 	mkdir -p ${BUILDDIR}
 
-profile: ${BUILDDIR}/day06.exe
+profile: ${BUILDDIR}/day11.exe
 	valgrind --tool=callgrind --callgrind-out-file=${BUILDDIR}/callgrind.out $<
 	kcachegrind ${BUILDDIR}/callgrind.out
 
