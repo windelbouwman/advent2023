@@ -20,7 +20,8 @@ all: ${BUILDDIR}/day01.exe \
   ${BUILDDIR}/day08.exe \
   ${BUILDDIR}/day09.exe \
   ${BUILDDIR}/day10.exe \
-  ${BUILDDIR}/day11.exe
+  ${BUILDDIR}/day11.exe \
+  ${BUILDDIR}/day12.exe ${BUILDDIR}/py/day12.py
 
 ${BUILDDIR}/day%.exe: ${BUILDDIR}/day%.o ${BUILDDIR}/slangrt.o ${BUILDDIR}/aoclib-c.o ${BUILDDIR}/libbase.o ${BUILDDIR}/libregex.o ${BUILDDIR}/libaoc.o
 	gcc -o $@ $< ${BUILDDIR}/slangrt.o ${BUILDDIR}/aoclib-c.o ${BUILDDIR}/libbase.o ${BUILDDIR}/libregex.o  ${BUILDDIR}/libaoc.o -lm
@@ -33,6 +34,9 @@ ${BUILDDIR}/lib%.o: ${BUILDDIR}/lib%.c
 
 ${BUILDDIR}/day%.c: ./%/main.slang ${BUILDDIR}/libbase.json ${BUILDDIR}/libregex.json ${BUILDDIR}/libaoc.json | ${BUILDDIR}
 	slangc --backend-c --add-import ${BUILDDIR}/libbase.json --add-import ${BUILDDIR}/libregex.json --add-import ${BUILDDIR}/libaoc.json -o $@ $<
+
+${BUILDDIR}/py/day%.py: ./%/main.slang ${BUILDDIR}/py/slangrt.py ${BUILDDIR}/py/libbase.json ${BUILDDIR}/py/libbase.py | ${BUILDDIR}/py
+	slangc --backend-py --add-import ${BUILDDIR}/py/libbase.json -o $@ $<
 
 ${BUILDDIR}/slangrt.o: ${SLANG_FOLDER}/runtime/slangrt.c | ${BUILDDIR}
 	gcc ${CFLAGS} -c -o $@ $<
@@ -49,8 +53,17 @@ ${BUILDDIR}/libregex.c ${BUILDDIR}/libregex.json: ${REGEX_LIB_SRCS} ${BUILDDIR}/
 ${BUILDDIR}/libbase.c ${BUILDDIR}/libbase.json: ${BASE_LIB_SRCS} | ${BUILDDIR}
 	slangc --backend-c --gen-export ${BUILDDIR}/libbase.json -o ${BUILDDIR}/libbase.c ${BASE_LIB_SRCS}
 
+${BUILDDIR}/py/libbase.py ${BUILDDIR}/py/libbase.json: ${BASE_LIB_SRCS} | ${BUILDDIR}/py
+	slangc --backend-py --gen-export ${BUILDDIR}/py/libbase.json -o ${BUILDDIR}/py/libbase.py ${BASE_LIB_SRCS}
+
+${BUILDDIR}/py/slangrt.py: ${SLANG_FOLDER}/runtime/slangrt.py | ${BUILDDIR}/py
+	cp $< $@
+
 ${BUILDDIR}:
 	mkdir -p ${BUILDDIR}
+
+${BUILDDIR}/py:
+	mkdir -p ${BUILDDIR}/py
 
 profile: ${BUILDDIR}/day11.exe
 	valgrind --tool=callgrind --callgrind-out-file=${BUILDDIR}/callgrind.out $<
