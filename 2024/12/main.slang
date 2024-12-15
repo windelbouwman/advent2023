@@ -2,7 +2,6 @@
 from std import print, read_file
 from strlib import split_lines
 from vectype import Vector, new_vector
-# from hashmap import HashMap, new_hashmap
 from settype import Set, new_set
 from datatypes import List
 
