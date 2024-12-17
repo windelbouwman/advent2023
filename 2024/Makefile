@@ -25,6 +25,7 @@ all: ${BUILDDIR}/day01.exe \
   ${BUILDDIR}/day13.exe \
   ${BUILDDIR}/day14.exe \
   ${BUILDDIR}/day15.exe \
+  ${BUILDDIR}/day16.exe \
   ${BUILDDIR}/day17.exe
 
 ${BUILDDIR}/day%.exe: ${BUILDDIR}/day%.o ${BUILDDIR}/slangrt.o ${BUILDDIR}/aoclib-c.o ${BUILDDIR}/libbase.o ${BUILDDIR}/libregex.o ${BUILDDIR}/libaoc.o
