@@ -1,8 +1,6 @@
 
 from std import print, read_file
-from strlib import split_lines, str_to_int, trim
-# from utils import panic
-from functools import map
+from strlib import split_lines
 from datatypes import List
 from hashmap import HashMap, new_hashmap
 from heapq import PriorityQueue, new_priority_queue_with_capacity
@@ -23,15 +21,14 @@ fn solve(filename: str):
     let cost_map: HashMap[Position, int] = new_hashmap(f_hash: position_hash, f_eq: position_equal)
     try_direction(cost_map, queue, came_from, p: puzzle.start, row: puzzle.start.row, col: puzzle.start.col, dir: puzzle.start.dir, new_cost: 0)
     let end = puzzle.end
-    let found = false
     while not queue.is_empty():
         let p = queue.pop()
         let cost = cost_map.get(key: p.pos)
         # print("Cost: {cost}")
-        if p.pos.row == puzzle.end.row and p.pos.col == puzzle.end.col and not found:
+        if p.pos.row == puzzle.end.row and p.pos.col == puzzle.end.col:
             print("Part1: {cost}")
             end = p.pos
-            found = true
+            break
         case p.pos.dir:
             North:
                 if puzzle.grid.get(row: p.pos.row - 1, col: p.pos.col) == '.':
@@ -94,10 +91,6 @@ fn try_direction(cost_map: HashMap[Position, int], queue: PriorityQueue[Position
             pred_list
         pred_list.append(p)
 
-fn part_2(filename: str):
-    let puzzle = load_puzzle(filename)
-    print("Part2: {0}")
-
 fn load_puzzle(filename: str) -> Puzzle:
     let rows: Vector[Vector[char]] = new_vector()
     let start = Position(row: 0, col: 0, dir: Direction.East())
@@ -147,9 +140,6 @@ fn position_equal(a?: Position, b?: Position) -> bool:
 fn position_hash(a?: Position) -> int:
     a.row * 7919 + a.col + direction_hash(a.dir) * 73
 
-fn position_to_string(a?: Position) -> str:
-    "{a.row},{a.col},{direction_to_string(a.dir)}"
-
 enum Direction:
     North
     East
@@ -169,17 +159,6 @@ fn direction_hash(a?: Direction) -> int:
             2
         West:
             3
-
-fn direction_to_string(a?: Direction) -> str:
-    case a:
-        North:
-            "N"
-        East:
-            "E"
-        South:
-            "S"
-        West:
-            "W"
 
 class Grid:
     var rows: Vector[Vector[char]]
